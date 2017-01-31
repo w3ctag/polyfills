@@ -1,248 +1,234 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Polyfills are part of the web - TAG finding</title>
-    <meta charset='utf-8'>
-    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
-            async class='remove'></script>
-    <script class='remove'>
-      var respecConfig = {
-          specStatus: "finding",
-          shortName:  "polyfills",
-          publishDate: "2017-01-01",
-          editors: [
-                {   name:       "Andrew Betts",
-                    url:        "https://trib.tv/",
-                }
-          ],
-          otherLinks: [{
-            key: 'Participate',
-            data: [{
-                      value: 'File a bug.',
-                      href: 'https://github.com/w3ctag/polyfills/issues'
-                  }, {
-                      value: 'Commit history.',
-                      href: 'https://github.com/w3ctag/polyfills/commits/gh-pages'
-                  }, {
-                      value: 'Mailing list.',
-                      href: 'https://lists.w3.org/Archives/Public/www-tag/'
-            }]
-          }],
-
-          wg:           "Technical Architecture Group",
-          wgURI:        "https://www.w3.org/2001/tag/",
-          wgPublicList: "www-tag",
-          wgPatentURI:  "https://www.w3.org/2001/tag/disclosures",
-          edDraftURI: "https://w3ctag.github.io/polyfills/",
-          noTOC: false,
-      };
-    </script>
+  <title>Polyfills are part of the web - TAG finding</title>
+  <meta charset='utf-8'>
+  <script src='https://www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script>
+  <script class='remove'>
+    var respecConfig = {
+      specStatus: "finding",
+      shortName: "polyfills",
+      publishDate: "2017-01-01",
+      format: "markdown",
+      editors: [
+        { name: "Andrew Betts", url: "https://trib.tv/" }
+      ],
+      otherLinks: [{
+        key: 'Participate',
+        data: [
+          { value: 'File a bug', href: 'https://github.com/w3ctag/polyfills/issues'},
+          { value: 'Commit history', href: 'https://github.com/w3ctag/polyfills/commits/gh-pages'},
+          { value: 'Mailing list', href: 'https://lists.w3.org/Archives/Public/www-tag/'}
+        ]
+      }],
+      wg: "Technical Architecture Group",
+      wgURI: "https://www.w3.org/2001/tag/",
+      wgPublicList: "www-tag",
+      wgPatentURI: "https://www.w3.org/2001/tag/disclosures",
+      edDraftURI: "https://w3ctag.github.io/polyfills/"
+    };
+  </script>
 </head>
 <body>
+
   <section id="abstract">
 
-    <p>Polyfills are a valuable part of Web architecture, because they promote the adoption of new features during the implementation process. However, polyfills can also create problems for standardisation efforts and therefore for the future of the Web. This document defines the risks, benefits, and role of polyfills on the Web, and proposes best practices for implementors, spec editors, website developers, polyfill authors, and operators of polyfill distribution platforms.</p>
+    Polyfills are a valuable part of Web architecture, because they promote the adoption of new features during the implementation process. However, polyfills can also create problems for standardisation efforts and therefore for the future of the Web. This document defines the risks, benefits, and role of polyfills on the Web, and proposes best practices for implementors, spec editors, website developers, polyfill authors, and operators of polyfill distribution platforms.
 
-    <p>For deeper background, see relevant <a href='https://lists.w3.org/Archives/Public/www-tag/2016Oct/0002.html'>TAG mailing list thread</a> and <a href='https://pad.w3ctag.org/p/2016-10-31-minutes.md'>F2F meeting minutes</a>.</p>
+    For deeper background, see relevant [TAG mailing list thread](https://lists.w3.org/Archives/Public/www-tag/2016Oct/0002.html) and [F2F meeting minutes](https://pad.w3ctag.org/p/2016-10-31-minutes.md).
 
   </section>
 
   <section id="sotd">
 
-    <p>This document has been produced by the <a href="https://www.w3.org/2001/tag/"><abbr title="World Wide Web Consortium">W3C</abbr> Technical Architecture Group (TAG)</a>. 
-    <!-- The TAG approved this finding at its <a href="">February 2017 F2F</a>.-->
-    The TAG has not yet approved this finding.
-    Please send comments on this finding to the publicly archived TAG mailing list <a href="mailto:www-tag@w3.org">www-tag@w3.org</a> (<a href="https://lists.w3.org/Archives/Public/www-tag/">archive</a>).</p>
+    This document has been produced by the [<abbr title="World Wide Web Consortium">W3C </abbr> Technical Architecture Group (TAG)](https://www.w3.org/2001/tag/).
+
+    The TAG has not yet approved this finding. Please send comments on this finding to the publicly archived TAG mailing list [www-tag@w3.org](mailto:www-tag@w3.org) ([archive](https://lists.w3.org/Archives/Public/www-tag/)).
 
   </section>
 
   <section>
 
-<h2>Feature life cycle and the role of polyfills</h2>
+    ## Feature life cycle and the role of polyfills
 
-<p>From a practical standpoint, the development of web platform features goes through a number of distinct phases:</p>
+    From a practical standpoint, the development of web platform features goes through a number of distinct phases:
 
-<ol>
-    <li>Idea discussion</li>
-    <li>Incubation</li>
-    <li>First native implementation (as a trial / behind flag)</li>
-    <li>Specification</li>
-    <li>Multiple interoperable implementations</li>
-    <li>Universal support</li>
-</ol>
+    1. Idea discussion
+    1. Incubation
+    1. First native implementation (as a trial / behind flag)
+    1. Specification
+    1. Multiple interoperable implementations
+    1. Universal support
 
-<p>The time lag between the first interoperable implementations (5) and fully universal support (6) can be long (occasionally as long as a decade). Polyfills can often effectively bridge this gap (between stages 5 and 6 above) and allow site developers to write solutions that assume universal support.</p>
+    The time lag between the first interoperable implementations (5) and fully universal support (6) can be long (occasionally as long as a decade). Polyfills can often effectively bridge this gap (between stages 5 and 6 above) and allow site developers to write solutions that assume universal support.
 
-<h3>Risks of premature polyfilling</h3>
+    ## Risks of premature polyfilling
 
-<p>Any JavaScript library that defines a property of the global object or extends a prototype of a global constructor, using a generically useful name, risks creating problems for the development of the Web if that library becomes widely available, and used, prior to the standardisation and implementation of the feature it seeks to create or emulate.</p>
+    Any JavaScript library that defines a property of the global object or extends a prototype of a global constructor, using a generically useful name, risks creating problems for the development of the Web if that library becomes widely available, and used, prior to the standardisation and implementation of the feature it seeks to create or emulate.
 
-<div class="example">
-  <p>Example: Mootools</p>
-  <p>The standardisation of Array.prototype.contains in JavaScript ran into problems when it became clear that an old version of Mootools had already augmented the Array prototype with a contains method. Websites that included this library would break in a browser that contained a native implementation of a contains method.  The standard method had to be renamed to includes to avoid breaking the web.</p>
-</div>
+    <div class="example">
+      <p>Example: Mootools</p>
+      <p>The standardisation of Array.prototype.contains in JavaScript ran into problems when it became clear that an old version of Mootools had already augmented the Array prototype with a contains method. Websites that included this library would break in a browser that contained a native implementation of a contains method.  The standard method had to be renamed to includes to avoid breaking the web.</p>
+    </div>
 
-<div class="example">
-  <p>Example: createShadowRoot</p>
-  <p>During the evolution of Web Components, Google created a polyfill for createShadowRoot. The adoption of this polyfill prevented the Working Group from iterating on the API design, so it was deprecated in favour of attachShadow.</p>
-</div>
+    <div class="example">
+      <p>Example: createShadowRoot</p>
+      <p>During the evolution of Web Components, Google created a polyfill for createShadowRoot. The adoption of this polyfill prevented the Working Group from iterating on the API design, so it was deprecated in favour of attachShadow.</p>
+    </div>
 
-<p>In some cases early implementers, cognisant of the possible risks of squatting on potential future web platform APIs which may change, will intentionally use a less common name, or modify the known future API name with a prefix or suffix. However, this can have the effect of encouraging implementers to support the modified name in the eventual native implementation.  The use of vendor names as prefixes further exacerbates this problem if vendors implement APIs under names that identify a different vendor.</p>
+    In some cases early implementers, cognisant of the possible risks of squatting on potential future web platform APIs which may change, will intentionally use a less common name, or modify the known future API name with a prefix or suffix. However, this can have the effect of encouraging implementers to support the modified name in the eventual native implementation.  The use of vendor names as prefixes further exacerbates this problem if vendors implement APIs under names that identify a different vendor.
 
-<div class="example">
-  <p>Example: requestAnimationFrame</p>
-  <p>Safari shipped requestAnimationFrame before other browsers, and the first implementations were available only as webkitRequestAnimationFrame. Today, Microsoft Edge also recognises webkitRequestAnimationFrame despite not being a webkit browser, in order to maximise their compatibility with sites originally optimised for the iPhone.</p>
-</div>
+    <div class="example">
+      <p>Example: requestAnimationFrame</p>
+      <p>Safari shipped requestAnimationFrame before other browsers, and the first implementations were available only as webkitRequestAnimationFrame. Today, Microsoft Edge also recognises webkitRequestAnimationFrame despite not being a webkit browser, in order to maximise their compatibility with sites originally optimised for the iPhone.</p>
+    </div>
 
-<P>Polyfill authors can avoid this problem if their version of the feature can be used under the custom name in all browsers, regardless of the existence of any native implementation of the same or similar feature under a different name.  However, many site developers will canonicalise the name of a library by deferring to a 'fantasy' native implementation under a name that might be standardised in future, or which is standardised but only available in some browsers, e.g.:</p>
+    Polyfill authors can avoid this problem if their version of the feature can be used under the custom name in all browsers, regardless of the existence of any native implementation of the same or similar feature under a different name.  However, many site developers will canonicalise the name of a library by deferring to a 'fantasy' native implementation under a name that might be standardised in future, or which is standardised but only available in some browsers, e.g.:
 
-<pre>window.requestAnimationFrame = requestAnimationFrame || webkitRequestAnimationFrame || rafEquivLibrary;</pre>
+    <pre>window.requestAnimationFrame = requestAnimationFrame || webkitRequestAnimationFrame || rafEquivLibrary;</pre>
 
-<p>Following this pattern sets up an assumption that the native implementation, when available, will be functionally identical to the library, which may not be the case.</p>
+    Following this pattern sets up an assumption that the native implementation, when available, will be functionally identical to the library, which may not be the case.
 
-<h3>Tipping point</h3>
+    ### Tipping point
 
-<p>It is useful to recognise a point in the lifecycle of a feature at which the definition of the feature is stable enough that polyfills no longer present significant risks to the evolution of the specification, and indeed are now essential to help the feature achieve a more rapid rollout.</p>
+    It is useful to recognise a point in the lifecycle of a feature at which the definition of the feature is stable enough that polyfills no longer present significant risks to the evolution of the specification, and indeed are now essential to help the feature achieve a more rapid rollout.
 
-<p>There is no common agreement on how to identify the tipping point, and it may indeed differ depending on the circumstances and type of feature.  We recommend paying attention to the following indicators:</p>
+    There is no common agreement on how to identify the tipping point, and it may indeed differ depending on the circumstances and type of feature.  We recommend paying attention to the following indicators:
 
-<ul>
-    <li>Multiple implementations: are there multiple interoperable implementations in shipping browsers?</li>
-    <li>Consensus: Is there broad consensus on the detail of the feature with no unresolved objections that would change the API interface or observed behaviour?</li>
-    <li>Test suite exists: Is there a comprehensive test suite that passes for native implementations?</li>
-    <li>Intent to implement: Is there a publicly declared intention to implement the feature based on the current specification from a major browser vendor?</li>
-</ul>
+    * Multiple implementations: are there multiple interoperable implementations in shipping browsers?
+    * Consensus: Is there broad consensus on the detail of the feature with no unresolved objections that would change the API interface or observed behaviour?
+    * Test suite exists: Is there a comprehensive test suite that passes for native implementations?
+    * Intent to implement: Is there a publicly declared intention to implement the feature based on the current specification from a major browser vendor?
 
-<p>It may be difficult for polyfill authors to determine whether a feature has achieved consensus, and in cases where it's unclear, authors should consult the chairs or editors of the feature specification.  In many cases this can be done by opening an issue in a public issue tracker, if the specification effort is using one, or otherwise by sending email to the appropriate mailing list. A lack of response should be interpreted as an indication that a feature has not passed the tipping point.</p>
+    It may be difficult for polyfill authors to determine whether a feature has achieved consensus, and in cases where it's unclear, authors should consult the chairs or editors of the feature specification.  In many cases this can be done by opening an issue in a public issue tracker, if the specification effort is using one, or otherwise by sending email to the appropriate mailing list. A lack of response should be interpreted as an indication that a feature has not passed the tipping point.
 
-<h3>Nomenclature</h3>
+    ### Nomenclature
 
-<p>Although 'polyfill' has come to be a well understood and recognised term, its etymology is obscure and culturally specific to the UK. This presents a barrier to understanding for many developers in other regions.  The community has also variously created other terms with distinct but poorly understood semantics, such as 'prollyfill', 'nottifill', 'ponyfill', 'shiv', 'sham', 'shim', and 'patch'.</p>
+    Although 'polyfill' has come to be a well understood and recognised term, its etymology is obscure and culturally specific to the UK. This presents a barrier to understanding for many developers in other regions.  The community has also variously created other terms with distinct but poorly understood semantics, such as 'prollyfill', 'nottifill', 'ponyfill', 'shiv', 'sham', 'shim', and 'patch'.
 
-<p>We recommend using only the term 'polyfill' to refer to any library code intended to exactly emulate something that is, is expected to be, or is desired by the polyfill author to be, a native feature of the web platform.  We recommend distinguishing clearly those polyfills that implement features which have yet to reach the tipping point using the term 'speculative polyfill'.</p>
+    We recommend using only the term 'polyfill' to refer to any library code intended to exactly emulate something that is, is expected to be, or is desired by the polyfill author to be, a native feature of the web platform.  We recommend distinguishing clearly those polyfills that implement features which have yet to reach the tipping point using the term 'speculative polyfill'.
 
-<h3>Other potential concerns</h3>
+    ### Other potential concerns
 
-<p>As the number of web platform features increases, the amount of polyfill code required to make website developers' application code run in older browsers may become extremely large - in some cases exceeding the size of the application code that depends on it.  This has implications for performance, both in terms of parsing the polyfill code, and the time required to download it.</p>
+    As the number of web platform features increases, the amount of polyfill code required to make website developers' application code run in older browsers may become extremely large - in some cases exceeding the size of the application code that depends on it.  This has implications for performance, both in terms of parsing the polyfill code, and the time required to download it.
 
-<p>Consideration should be given to whether excessively large polyfill bundles place a punitive cost burden on users with the least ability to pay that cost: those with older devices which may be on metered connections paying for data in very small increments.</p>
+    Consideration should be given to whether excessively large polyfill bundles place a punitive cost burden on users with the least ability to pay that cost: those with older devices which may be on metered connections paying for data in very small increments.
 
-<p>Polyfills are generally not written by browser vendors, and may not have the infrastructure or support network of a major project, leading to potential security concerns.  These concerns are amplified if the polyfill acquires wide adoption, which may leave many unconnected sites vulnerable to the same security exploit.</p>
+    Polyfills are generally not written by browser vendors, and may not have the infrastructure or support network of a major project, leading to potential security concerns.  These concerns are amplified if the polyfill acquires wide adoption, which may leave many unconnected sites vulnerable to the same security exploit.
 
-</section>
+  </section>
 
-<section>
+  <section>
 
-<h2>Recommendations for polyfill, library and framework authors</h2>
+    ## Recommendations for polyfill, library and framework authors
 
-<p>Polyfill authors can mitigate the concerns outlined above. Following a set of best practices will help to ensure that the polyfill promotes (as is surely intended) the adoption of the feature, rather than standing in the way of its standardisation.</p>
+    Polyfill authors can mitigate the concerns outlined above. Following a set of best practices will help to ensure that the polyfill promotes (as is surely intended) the adoption of the feature, rather than standing in the way of its standardisation.
 
-<h3>Encapsulate as a module or UMD</h3>
+    ### Encapsulate as a module or UMD
 
-<p>Use standard mechanisms for encapsulating your polyfill, such as ECMAScript modules, <a href='http://wiki.commonjs.org/wiki/CommonJS'>commonJS</a> or <a href='https://github.com/amdjs/amdjs-api/wiki/AMD'>AMD</a>.  If not defining an ES module, use a <a href='https://github.com/umdjs/umd'>universal module declaration</a> to make your polyfill compatible with multiple module loaders.</p>
+    Use standard mechanisms for encapsulating your polyfill, such as ECMAScript modules, <a href='http://wiki.commonjs.org/wiki/CommonJS'>commonJS</a> or <a href='https://github.com/amdjs/amdjs-api/wiki/AMD'>AMD</a>.  If not defining an ES module, use a <a href='https://github.com/umdjs/umd'>universal module declaration</a> to make your polyfill compatible with multiple module loaders.
 
-<p>Don't pollute the global scope by creating or extending globals when your module is consumed via a module loader.</p>
+    Don't pollute the global scope by creating or extending globals when your module is consumed via a module loader.
 
-<h3>Use smart distribution</h3>
+    ### Use smart distribution
 
-<p>Choose a platform on which to publish your polyfill from which developers can easily consume it in a way that keeps up to date with changes to the original source.  For example, use a module registry like <a href='https://npmjs.org/'>npmjs.org</a>, and consider hosting the polyfill on a service from which it can be directly loaded in the browser, such as <a href='https://cdnjs.com/'>cdnjs.com</a> or <a href='https://polyfill.io/'>polyfill.io</a>.</p>
+    Choose a platform on which to publish your polyfill from which developers can easily consume it in a way that keeps up to date with changes to the original source.  For example, use a module registry like <a href='https://npmjs.org/'>npmjs.org</a>, and consider hosting the polyfill on a service from which it can be directly loaded in the browser, such as <a href='https://cdnjs.com/'>cdnjs.com</a> or <a href='https://polyfill.io/'>polyfill.io</a>.
 
-<h3>Don't create globals with common names for speculative polyfills</h3>
+    ### Don't create globals with common names for speculative polyfills
 
-<p>If a feature has not passed the tipping point, do not squat on the common, expected or likely name (whether it's a property of the global object or of a global constructor/prototype).  Consider prefixing or changing the common name, or appending 'polyfill'.  For example, if an upcoming feature is likely to be called <code>window.API</code>, consider attaching your polyfill to <code>window.AlmostAPI</code> or <code>window.APIPolyfill</code>.</p>
+    If a feature has not passed the tipping point, do not squat on the common, expected or likely name (whether it's a property of the global object or of a global constructor/prototype).  Consider prefixing or changing the common name, or appending 'polyfill'.  For example, if an upcoming feature is likely to be called `window.API`, consider attaching your polyfill to `window.AlmostAPI` or `window.APIPolyfill`.
 
-<p>If the feature is a method of an existing global prototype, do not create that method for features that have not passed the tipping point.  Instead, consider creating a standalone function, e.g. <code>doTheThingPolyfill(element)</code> instead of <code>Element.prototype.doTheThing</code>.</p>
+    If the feature is a method of an existing global prototype, do not create that method for features that have not passed the tipping point.  Instead, consider creating a standalone function, e.g. `doTheThingPolyfill(element)` instead of `Element.prototype.doTheThing`.
 
-<p>Do not by default use incredibly short or generic names, such as $, root or web.</p>
+    Do not by default use incredibly short or generic names, such as $, root or web.
 
-<p>If the feature <strong>has</strong> passed the tipping point, your polyfill is spec-compliant, and it is not being consumed by a module loader, it's OK to attach to the common name.</p>
+    If the feature **has** passed the tipping point, your polyfill is spec-compliant, and it is not being consumed by a module loader, it's OK to attach to the common name.
 
-<h3>Pass web platform tests, if they exist</h3>
+    ### Pass web platform tests, if they exist
 
-<p>Attempt to pass <a href='https://github.com/w3c/web-platform-tests'>Web Platform Tests</a> for your polyfill and advertise the results, as a way to help potential consumers of the polyfill more effectively evaluate the risks associated with using the polyfill.</p>
+    Attempt to pass <a href='https://github.com/w3c/web-platform-tests'>Web Platform Tests</a> for your polyfill and advertise the results, as a way to help potential consumers of the polyfill more effectively evaluate the risks associated with using the polyfill.
 
-<h3>Detect, warn and defer to native implementations</h3>
+    ### Detect, warn and defer to native implementations
 
-<p>For features that have reached the tipping point, where the polyfill registers the same name as the native feature, include code to detect a native implementation, and if one exists, defer to it.  Where a native feature exists but is incomplete or buggy, consider using as much of it as possible and correcting only the deficiencies.</p>
+    For features that have reached the tipping point, where the polyfill registers the same name as the native feature, include code to detect a native implementation, and if one exists, defer to it.  Where a native feature exists but is incomplete or buggy, consider using as much of it as possible and correcting only the deficiencies.
 
-<div class="example">
-  <p>Example: searchParams</p>
-  <p>Initial implementations of the <a href='https://developer.mozilla.org/en/docs/Web/API/URL#Browser_compatibility'>URL API</a> were almost universally incomplete in that they did not include searchParams. The full specification was only supported by later releases. In the meantime, polyfills could make use of the native support that was available, and add the part that was missing.</p>
-</div>
+    <div class="example">
+      <p>Example: searchParams</p>
+      <p>Initial implementations of the <a href='https://developer.mozilla.org/en/docs/Web/API/URL#Browser_compatibility'>URL API</a> were almost universally incomplete in that they did not include searchParams. The full specification was only supported by later releases. In the meantime, polyfills could make use of the native support that was available, and add the part that was missing.</p>
+    </div>
 
-<p>When a full fledged native implementation is available, consider throwing a warning to the console to tell the site developer that they loaded a polyfill unnecessarily.</p>
+    When a full fledged native implementation is available, consider throwing a warning to the console to tell the site developer that they loaded a polyfill unnecessarily.
 
-<p>For features that are yet to reach the tipping point, speculative polyfills should not detect or defer to native implementations, and should not use the same name as a native implementation.</p>
+    For features that are yet to reach the tipping point, speculative polyfills should not detect or defer to native implementations, and should not use the same name as a native implementation.
 
-</section>
+  </section>
 
-<section>
-<h2>Recommendations for website developers</h2>
+  <section>
 
-<p>Website developers can achieve maximum benefits from polyfills and by following these best practices.</p>
+    ## Recommendations for website developers
 
-<h3>Understand stability of both feature and polyfill</h3>
+    Website developers can achieve maximum benefits from polyfills and by following these best practices.
 
-<p>Use the lifecycle guidance above to understand whether the feature has passed the tipping point, and can be considered stable. When selecting a polyfill, look for signs of quality such as:</p>
+    ### Understand stability of both feature and polyfill
 
-<ul>
-    <li>Comprehensive test suite, especially if it includes relevant Web Platform Tests</li>
-    <li>Effects on the performance profile of your site, measured using in-browser profiling tools or other auditing or monitoring tools or services</li>
-</ul>
+    Use the lifecycle guidance above to understand whether the feature has passed the tipping point, and can be considered stable. When selecting a polyfill, look for signs of quality such as:
 
-<h3>Do not automatically prefer native implementations for speculative polyfills</h3>
+    * Comprehensive test suite, especially if it includes relevant Web Platform Tests</li>
+    * Effects on the performance profile of your site, measured using in-browser profiling tools or other auditing or monitoring tools or services
 
-<p>If a feature is yet to reach the tipping point, using polyfills that squat on the common name for the feature is highly inadvisable, because when the feature is finalised, it might work differently to the polyfill you are using, and your website may break.  If a polyfill author has followed good practice by providing a polyfill with a non-conflicting name, don't undo this good practice by aliasing it to the common name.</p>
+    ### Do not automatically prefer native implementations for speculative polyfills
 
-<p>Instead, use the speculative polyfill as a library, wait until the feature has passed the tipping point, then update your code to use a transparent polyfill that automatically defers to native implementations where they exist.</p>
+    If a feature is yet to reach the tipping point, using polyfills that squat on the common name for the feature is highly inadvisable, because when the feature is finalised, it might work differently to the polyfill you are using, and your website may break.  If a polyfill author has followed good practice by providing a polyfill with a non-conflicting name, don't undo this good practice by aliasing it to the common name.
 
-<h3>Do not serve polyfills that are not required by the user</h3>
+    Instead, use the speculative polyfill as a library, wait until the feature has passed the tipping point, then update your code to use a transparent polyfill that automatically defers to native implementations where they exist.
 
-<p>Shipping unnecessary bytes to users that don't need them wastes the user's time and data allowance. Polyfill authors following good practice may throw a warning if the polyfill is loaded when not needed.</p>
+    ### Do not serve polyfills that are not required by the user
 
-<p>Consider using techniques such as feature detection in the browser to dynamically determine which polyfills to use, or <code>User-Agent</code> based browser identification to do so on a server.</p>
+    Shipping unnecessary bytes to users that don't need them wastes the user's time and data allowance. Polyfill authors following good practice may throw a warning if the polyfill is loaded when not needed.
 
-<h3>Implement or make use of an update mechanism</h3>
+    Consider using techniques such as feature detection in the browser to dynamically determine which polyfills to use, or <code>User-Agent</code> based browser identification to do so on a server.
 
-<p>Don't bake a polyfill into your codebase in a way that does not allow for easy updates from source, especially if the polyfill includes code that automatically defers to a native implementation.  Updating such polyfills regularly will help to ensure that browsers receiving the polyfilled behaviour exhibit the same functionality as those in which you are using the feature natively.</p>
+    ### Implement or make use of an update mechanism
 
-<h3>Consider alternative ways of serving users of the slowest, least capable devices</h3>
+    Don't bake a polyfill into your codebase in a way that does not allow for easy updates from source, especially if the polyfill includes code that automatically defers to a native implementation.  Updating such polyfills regularly will help to ensure that browsers receiving the polyfilled behaviour exhibit the same functionality as those in which you are using the feature natively.
 
-<p>Typically the devices and browsers that require the largest amount of polyfill code are also the least capable of parsing it efficiently, and the most likely to be on a metered and expensive internet connection.</p>
+    ### Consider alternative ways of serving users of the slowest, least capable devices
 
-<p>Consider setting a baseline of support below which you provide a less enhanced experience that does not require the latest features (that you would otherwise need to polyfill).  Potential alternative solutions for these browsers include:</p>
+    Typically the devices and browsers that require the largest amount of polyfill code are also the least capable of parsing it efficiently, and the most likely to be on a metered and expensive internet connection.
 
-<ul>
-    <li>A version of the site that does not require the newer feature</li>
-    <li>A version of the JavaScript 'transpiled' using a server-side tool to replace more modern features with equivalent older ones for the same end result</li>
-    <li>A notice informing the user that their browser is not capable of using that aspect of your site, or the entire site.  This may be appropriate in some cases where the site is an application whose fundamental purpose relies on a particular feature of the web.</li>
-</ul>
+    Consider setting a baseline of support below which you provide a less enhanced experience that does not require the latest features (that you would otherwise need to polyfill).  Potential alternative solutions for these browsers include:
 
-<p>If you implement a baseline, detection of browsers that fall below the line must be based on robust feature detection, not proxy indicators that may be easier to measure but which will also exclude capable browsers.</p>
+    * A version of the site that does not require the newer feature
+    * A version of the JavaScript 'transpiled' using a server-side tool to replace more modern features with equivalent older ones for the same end result
+    * A notice informing the user that their browser is not capable of using that aspect of your site, or the entire site.  This may be appropriate in some cases where the site is an application whose fundamental purpose relies on a particular feature of the web.
 
-</section>
-<section>
-<h2>Recommendations for polyfill distributors</h2>
+    If you implement a baseline, detection of browsers that fall below the line must be based on robust feature detection, not proxy indicators that may be easier to measure but which will also exclude capable browsers.
 
-<p>If you run a service or project that promotes and distributes polyfills, you can help the web move forward by adhering to the following best practices.</p>
+  </section>
 
-<h3>Don't host or serve bad polyfills</h3>
+  <section>
 
-<p>When considering whether to distribute a polyfill, check whether it meets the best practices outlined under the Recommendations for polyfill authors within this finding.</p>
+    ## Recommendations for polyfill distributors
 
-<h3>Update polyfills as specifications change</h3>
+    If you run a service or project that promotes and distributes polyfills, you can help the web move forward by adhering to the following best practices.
 
-<p>Keep the polyfills that you host up to date.  If practical, push updates directly to your customers, otherwise encourage them to move to the latest version.</p>
+    ### Don't host or serve bad polyfills
 
-<h3>Collect usage data and feed this back to spec editors</h3>
+    When considering whether to distribute a polyfill, check whether it meets the best practices outlined under the Recommendations for polyfill authors within this finding.
 
-<p>If practical, collect information about which polyfills are most popular, and where site developers are encountering problems using them, or problems with polyfills conflicting with or behaving differently to a native implementation - and send that information to the appropriate parties.</p>
+    ### Update polyfills as specifications change
 
-<h3>Don't bundle dependencies without declaring them</h3>
+    Keep the polyfills that you host up to date.  If practical, push updates directly to your customers, otherwise encourage them to move to the latest version.
 
-<p>If you offer a service that bundles multiple polyfills together, make sure people using the service are able to easily find out which polyfills are being included, and can exclude any polyfills for features that they have already polyfilled earlier or by another means.  This is especially important if your service automatically includes polyfills for features that are dependencies of features requested by the user.</p>
+    ### Collect usage data and feed this back to spec editors
 
-</section>
+    If practical, collect information about which polyfills are most popular, and where site developers are encountering problems using them, or problems with polyfills conflicting with or behaving differently to a native implementation - and send that information to the appropriate parties.
+
+    ### Don't bundle dependencies without declaring them
+
+    If you offer a service that bundles multiple polyfills together, make sure people using the service are able to easily find out which polyfills are being included, and can exclude any polyfills for features that they have already polyfilled earlier or by another means.  This is especially important if your service automatically includes polyfills for features that are dependencies of features requested by the user.
+
+  </section>
 
 </body>
 </html>
