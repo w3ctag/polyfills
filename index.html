@@ -48,6 +48,24 @@
   </section>
 
   <section>
+    ## Nomenclature: What is a polyfill?
+
+    A *polyfill* is a piece of JavaScript code that is intended to exactly simulate a native, interoperable feature of the web platform, for the purpose of allowing website developers to use modern web features in older browsers.
+
+    The term *polyfill* was coined by Remy Sharp in the 2009 book Introducing HTML5 ([p276](https://books.google.com/books?id=a8HQCk4pbQkC&pg=PA276)), and differentiated from *shim*:
+
+    > What makes a polyfill different from the techniques we have already, like a shim, is this: if you removed the polyfill script, your code would continue to work, without any changes required in spite of the polyfill being removed.
+
+    Since then, the term *prollyfill* has been used by some to refer to code which implements features that are yet to be sufficiently standardised to be considered part of the web platform.  *Ponyfill* is occasionally used to refer to code which implements standard platform features but in a private scope. Other terms such as *nottifill*, *shiv*, *sham*, *shim*, *library* and *patch* also exist and are used with varying degrees of popularity and shared semantics.
+
+    We find that although the terms *library* and *polyfill* are the most well recognised of these, *polyfill's* etymology is non-obvious and is [in part culturally specific to the UK](https://remysharp.com/2010/10/08/what-is-a-polyfill/). For the avoidance of confusion, we use the following terms in this finding and offer them as a useful reference:
+
+    * **polyfill**: Emulates a well established feature of the web platform
+    * **speculative polyfill** (aka 'ponyfill', 'prollyfill', 'nottifill'): Emulates a proposed feature of the web platform
+    * **library** (aka 'module'): Provides features or functionality not anticipated to be a web platform feature
+  </section>
+
+  <section>
 
     ## Feature life cycle and the role of polyfills
 
@@ -101,12 +119,6 @@
     * Intent to implement: Is there a publicly declared intention to implement the feature based on the current specification from a major browser vendor?
 
     It may be difficult for polyfill authors to determine whether a feature has achieved consensus, and in cases where it's unclear, authors should consult the chairs or editors of the feature specification.  In many cases this can be done by opening an issue in a public issue tracker, if the specification effort is using one, or otherwise by sending email to the appropriate mailing list. A lack of response should be interpreted as an indication that a feature has not passed the tipping point.
-
-    ### Nomenclature
-
-    Although 'polyfill' has come to be a well understood and recognised term, its etymology is obscure and culturally specific to the UK. This presents a barrier to understanding for many developers in other regions.  The community has also variously created other terms with distinct but poorly understood semantics, such as 'prollyfill', 'nottifill', 'ponyfill', 'shiv', 'sham', 'shim', and 'patch'.
-
-    We recommend using only the term 'polyfill' to refer to any library code intended to exactly emulate something that is, is expected to be, or is desired by the polyfill author to be, a native feature of the web platform.  We recommend distinguishing clearly those polyfills that implement features which have yet to reach the tipping point using the term 'speculative polyfill'.
 
     ### Other potential concerns
 
