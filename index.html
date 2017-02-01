@@ -96,9 +96,9 @@
 
     In some cases early implementers, cognisant of the possible risks of squatting on potential future web platform APIs which may change, will intentionally use a less common name, or modify the proposed API name with a prefix or suffix. However, this can have the effect of encouraging implementers to support the modified name in the eventual native implementation.  The use of vendor names as prefixes further exacerbates this problem if vendors implement APIs under names that identify a different vendor.
 
-    <div class="example" title='requestAnimationFrame'>
+    <aside class="example" title='requestAnimationFrame'>
       <p>Safari shipped requestAnimationFrame before other browsers, and the first implementations were available only as webkitRequestAnimationFrame. Today, Microsoft Edge also recognises webkitRequestAnimationFrame despite not being a webkit browser, in order to maximise their compatibility with sites originally optimised for the iPhone.</p>
-    </div>
+    </aside>
 
     Polyfill authors can avoid this problem if their version of the feature can be used under the custom name in all browsers, regardless of the existence of any native implementation of the same or similar feature under a different name.  However, many site developers will canonicalise the name of a library by deferring to a 'fantasy' native implementation under a name that might be standardised in future, or which is standardised but only available in some browsers, e.g.:
 
