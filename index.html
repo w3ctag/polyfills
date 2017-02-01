@@ -212,6 +212,10 @@
 
     If you implement a baseline, detection of browsers that fall below the line must be based on robust feature detection, not proxy indicators that may be easier to measure but which will also exclude capable browsers.
 
+    ### Make use of caches
+
+    Serve polyfill code to your users in a form that can be cached locally in the user's browser.  If available to you, make use of a CDN to cache the polyfill code as close to users as possible.  Ideally, use the `immutable` directive in the [`Cache-Control`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control) response header.
+
   </section>
 
   <section id='advice-distrib'>
