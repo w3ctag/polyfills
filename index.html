@@ -64,7 +64,7 @@
     * **polyfill**: Emulates a well established feature of the web platform
     * **speculative polyfill** (aka 'ponyfill', 'prollyfill', 'nottifill'): Emulates a proposed feature of the web platform
     * **library** (aka 'module'): Provides features or functionality not anticipated to be a web platform feature
-    
+
   </section>
 
   <section id='life-cycle'>
@@ -190,17 +190,17 @@
 
     Instead, use the speculative polyfill as a library, wait until the feature has passed the tipping point, then update your code to use a transparent polyfill that automatically defers to native implementations where they exist.
 
-    ### Do not serve polyfills that are not required by the user
+    ### Don't serve unnecessary polyfills
 
     Shipping unnecessary bytes to users that don't need them wastes the user's time and data allowance. Polyfill authors following good practice may throw a warning if the polyfill is loaded when not needed.
 
     Consider using feature detection to dynamically determine which polyfills to use.
 
-    ### Implement or make use of an update mechanism
+    ### Keep polyfills up to date
 
     When incorporating polyfills into your codebase, create a mechanism that allows you to easily update the polyfill from source later.  Updating polyfills regularly will help to ensure that browsers receiving the polyfilled behaviour exhibit the same functionality as those in which you are using the feature natively.
 
-    ### Consider alternative ways of serving users of the slowest, least capable devices
+    ### Consider the slowest, least capable devices
 
     Typically the devices and browsers that require the largest amount of polyfill code are also the least capable of parsing it efficiently, and the most likely to be on a metered and expensive internet connection.
 
@@ -228,11 +228,11 @@
 
     Keep the polyfills that you host up to date.  If practical, push updates directly to your customers, otherwise encourage them to move to the latest version.
 
-    ### Collect usage data and feed this back to spec editors
+    ### Collect usage data
 
     If practical, collect information about which polyfills are most popular, and where site developers are encountering problems using them, or problems with polyfills conflicting with or behaving differently to a native implementation - and send that information to the appropriate parties.
 
-    ### Don't bundle dependencies without declaring them
+    ### Don't bundle dependencies
 
     If you offer a service that bundles multiple polyfills together, make sure people using the service are able to easily find out which polyfills are being included, and can exclude any polyfills for features that they have already polyfilled earlier or by another means.  This is especially important if your service automatically includes polyfills for features that are dependencies of features requested by the user.
 
