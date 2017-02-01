@@ -240,6 +240,10 @@
 
     If you offer a service that bundles multiple polyfills together, make sure people using the service are able to easily find out which polyfills are being included, and can exclude any polyfills for features that they have already polyfilled earlier or by another means.  This is especially important if your service automatically includes polyfills for features that are dependencies of features requested by the user.
 
+    ### Make use of caches
+
+    Serve polyfill code to your users in a form that can be cached locally in the user's browser.  If available to you, make use of a CDN to cache the polyfill code as close to users as possible.  Ideally, use the `immutable` directive in the [`Cache-Control`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control) response header.
+
   </section>
 
 </body>
