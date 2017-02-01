@@ -214,6 +214,38 @@
 
   </section>
 
+  <section id='advice-library'>
+
+    ## Advice for library and framework authors
+
+    Some libraries and frameworks bundle polyfills to achieve the maximum browser compatibility and developer satisfaction.  We find that the following best practices apply to library authors:
+
+    ### Consider whether to include polyfills
+
+    In deciding whether to ship polyfill-like code inside your library, you should consider questions such as:
+
+    * **How much of the feature are you using?** If you want [`fetch`](https://developer.mozilla.org/en/docs/Web/API/Fetch_API) but your use of it could be emulated in a 10-line wrapper around [`XHR`](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest), then it's better to do that than to bundle a spec-compliant `fetch` polyfill.
+    * **How large is the polyfill code relative to your library code?** If it's a tiny polyfill (such as for a `Number.isNaN` implementation) then the overheads are negligible and not worth any concern.  However, in some cases a polyfill might exceed the size of the library.
+    * **Are there multiple polyfills available?** If developers have a choice of polyfills for this feature, you may want to choose the one that works best with your library. If there's only one canonical option, it's easier to assume that the developer will use it.
+    * **Does your library provide a good experience only when the feature is available natively?** If a polyfill allows your library to work but in an unacceptably slow or buggy way, it probably should not ship as part of the library.
+
+    ### Always encapsulate
+
+    Don't modify globals or native object prototypes. If you ship code as part of your library that emulates platform features, do so inside a closure.
+
+    ### Use native implementations when available
+
+    Don't lean on bundled polyfill code unconditionally.  In browsers that offer a native implementation, use it.
+
+    ### Consider alternatives
+
+    If including a polyfill is not a good solution, consider alternatives such as:
+
+    * Declare the need for the feature as a requirement in your documentation, and allow the website developer to decide whether to polyfill it
+    * At initialisation, throw a descriptive error and abort early if your library is invoked in a browser that does not have all the features you need
+
+  </section>
+
   <section id='advice-distrib'>
 
     ## Advice for polyfill distributors
