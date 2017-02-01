@@ -47,7 +47,8 @@
 
   </section>
 
-  <section>
+  <section id='nomenclature'>
+
     ## Nomenclature: What is a polyfill?
 
     A *polyfill* is a piece of JavaScript code that is intended to exactly simulate a native, interoperable feature of the web platform, for the purpose of allowing website developers to use modern web features in older browsers.
@@ -63,9 +64,10 @@
     * **polyfill**: Emulates a well established feature of the web platform
     * **speculative polyfill** (aka 'ponyfill', 'prollyfill', 'nottifill'): Emulates a proposed feature of the web platform
     * **library** (aka 'module'): Provides features or functionality not anticipated to be a web platform feature
+    
   </section>
 
-  <section>
+  <section id='life-cycle'>
 
     ## Feature life cycle and the role of polyfills
 
@@ -82,36 +84,33 @@
 
     ## Risks of premature polyfilling
 
-    Any JavaScript library that defines a property of the global object or extends a prototype of a global constructor, using a generically useful name, risks creating problems for the development of the Web if that library becomes widely available, and used, prior to the standardisation and implementation of the feature it seeks to create or emulate.
+    Any JavaScript library that defines a property of the global object or extends a prototype of a global constructor, using a proposed or generically useful name, risks creating problems for the development of the Web if that library becomes widely available, and used, prior to the standardisation and implementation of the feature it seeks to create or emulate.
 
-    <div class="example">
-      <p>Example: Mootools</p>
-      <p>The standardisation of Array.prototype.contains in JavaScript ran into problems when it became clear that an old version of Mootools had already augmented the Array prototype with a contains method. Websites that included this library would break in a browser that contained a native implementation of a contains method.  The standard method had to be renamed to includes to avoid breaking the web.</p>
-    </div>
+    <aside class="example" title='Mootools'>
+      <p>The standardisation of `Array.prototype.contains` in JavaScript ran into problems when [it became clear that an old version of Mootools had already augmented the Array prototype](https://esdiscuss.org/topic/having-a-non-enumerable-array-prototype-contains-may-not-be-web-compatible) with a contains method. Websites that included this library would break in a browser that contained a native implementation of a contains method.  The standard method had to be renamed to includes to avoid breaking the web.</p>
+    </aside>
 
-    <div class="example">
-      <p>Example: createShadowRoot</p>
-      <p>During the evolution of Web Components, Google created a polyfill for createShadowRoot. The adoption of this polyfill prevented the Working Group from iterating on the API design, so it was deprecated in favour of attachShadow.</p>
-    </div>
+    <aside class="example" title='createShadowRoot'>
+      <p>During the evolution of Web Components, Google created a polyfill for `createShadowRoot`. The adoption of this polyfill prevented the Working Group from iterating on the API design, so [it was deprecated in favour of `attachShadow`](https://github.com/webcomponents/hello-world-element/issues/11).</p>
+    </aside>
 
-    In some cases early implementers, cognisant of the possible risks of squatting on potential future web platform APIs which may change, will intentionally use a less common name, or modify the known future API name with a prefix or suffix. However, this can have the effect of encouraging implementers to support the modified name in the eventual native implementation.  The use of vendor names as prefixes further exacerbates this problem if vendors implement APIs under names that identify a different vendor.
+    In some cases early implementers, cognisant of the possible risks of squatting on potential future web platform APIs which may change, will intentionally use a less common name, or modify the proposed API name with a prefix or suffix. However, this can have the effect of encouraging implementers to support the modified name in the eventual native implementation.  The use of vendor names as prefixes further exacerbates this problem if vendors implement APIs under names that identify a different vendor.
 
-    <div class="example">
-      <p>Example: requestAnimationFrame</p>
+    <div class="example" title='requestAnimationFrame'>
       <p>Safari shipped requestAnimationFrame before other browsers, and the first implementations were available only as webkitRequestAnimationFrame. Today, Microsoft Edge also recognises webkitRequestAnimationFrame despite not being a webkit browser, in order to maximise their compatibility with sites originally optimised for the iPhone.</p>
     </div>
 
     Polyfill authors can avoid this problem if their version of the feature can be used under the custom name in all browsers, regardless of the existence of any native implementation of the same or similar feature under a different name.  However, many site developers will canonicalise the name of a library by deferring to a 'fantasy' native implementation under a name that might be standardised in future, or which is standardised but only available in some browsers, e.g.:
 
-    <pre>window.requestAnimationFrame = requestAnimationFrame || webkitRequestAnimationFrame || rafEquivLibrary;</pre>
+    <pre>requestAnimationFrame = requestAnimationFrame || webkitRequestAnimationFrame || rafEquivLibrary;</pre>
 
-    Following this pattern sets up an assumption that the native implementation, when available, will be functionally identical to the library, which may not be the case.
+    Following this pattern sets up an assumption that the standard native implementation, when available, will be functionally identical to the vendor-prefixed implementation or speculative polyfill, which may not be the case.
 
     ### Tipping point
 
     It is useful to recognise a point in the lifecycle of a feature at which the definition of the feature is stable enough that polyfills no longer present significant risks to the evolution of the specification, and indeed are now essential to help the feature achieve a more rapid rollout.
 
-    There is no common agreement on how to identify the tipping point, and it may indeed differ depending on the circumstances and type of feature.  We recommend paying attention to the following indicators:
+    There is no common agreement on how to identify the tipping point, and it may indeed differ depending on the circumstances and type of feature.  We find that the following indicators are relevant:
 
     * Multiple implementations: are there multiple interoperable implementations in shipping browsers?
     * Consensus: Is there broad consensus on the detail of the feature with no unresolved objections that would change the API interface or observed behaviour?
@@ -130,65 +129,62 @@
 
   </section>
 
-  <section>
+  <section id='advice-authors'>
 
-    ## Recommendations for polyfill, library and framework authors
+    ## Advice for polyfill authors
 
-    Polyfill authors can mitigate the concerns outlined above. Following a set of best practices will help to ensure that the polyfill promotes (as is surely intended) the adoption of the feature, rather than standing in the way of its standardisation.
+    Polyfill authors can mitigate the concerns outlined above. Following a set of best practices will help to ensure that the polyfill promotes the adoption of the feature, rather than standing in the way of its standardisation.
 
     ### Encapsulate as a module or UMD
 
     Use standard mechanisms for encapsulating your polyfill, such as ECMAScript modules, <a href='http://wiki.commonjs.org/wiki/CommonJS'>commonJS</a> or <a href='https://github.com/amdjs/amdjs-api/wiki/AMD'>AMD</a>.  If not defining an ES module, use a <a href='https://github.com/umdjs/umd'>universal module declaration</a> to make your polyfill compatible with multiple module loaders.
 
-    Don't pollute the global scope by creating or extending globals when your module is consumed via a module loader.
+    Don't pollute the global scope by creating or extending global objects inside a module that is intended to be consumed via a module loader.
 
     ### Use smart distribution
 
     Choose a platform on which to publish your polyfill from which developers can easily consume it in a way that keeps up to date with changes to the original source.  For example, use a module registry like <a href='https://npmjs.org/'>npmjs.org</a>, and consider hosting the polyfill on a service from which it can be directly loaded in the browser, such as <a href='https://cdnjs.com/'>cdnjs.com</a> or <a href='https://polyfill.io/'>polyfill.io</a>.
 
-    ### Don't create globals with common names for speculative polyfills
+    ### Don't squat on proposed names in speculative polyfills
 
-    If a feature has not passed the tipping point, do not squat on the common, expected or likely name (whether it's a property of the global object or of a global constructor/prototype).  Consider prefixing or changing the common name, or appending 'polyfill'.  For example, if an upcoming feature is likely to be called `window.API`, consider attaching your polyfill to `window.AlmostAPI` or `window.APIPolyfill`.
+    If a feature has not passed the tipping point, do not squat on the proposed or common name (whether it's a property of the global object or of a global constructor/prototype).  Consider prefixing or changing the proposed name, or appending 'polyfill'.  For example, if an upcoming feature is likely to be called `window.Foo`, consider attaching your polyfill to `window.FutureFoo` or `window.FooPolyfill`.
 
-    If the feature is a method of an existing global prototype, do not create that method for features that have not passed the tipping point.  Instead, consider creating a standalone function, e.g. `doTheThingPolyfill(element)` instead of `Element.prototype.doTheThing`.
+    Avoid incredibly short or obviously generic names, such as `$`, `root` or `web`.
 
-    Do not by default use incredibly short or generic names, such as $, root or web.
-
-    If the feature **has** passed the tipping point, your polyfill is spec-compliant, and it is not being consumed by a module loader, it's OK to attach to the common name.
+    If the feature **has** passed the tipping point, and your polyfill is spec-compliant, it's OK to attach to the standard name.
 
     ### Pass web platform tests, if they exist
 
-    Attempt to pass <a href='https://github.com/w3c/web-platform-tests'>Web Platform Tests</a> for your polyfill and advertise the results, as a way to help potential consumers of the polyfill more effectively evaluate the risks associated with using the polyfill.
+    Attempt to pass [Web Platform Tests](https://github.com/w3c/web-platform-tests) for your polyfill and advertise the results, as a way to help potential consumers of the polyfill more effectively evaluate the risks associated with using the polyfill.
 
-    ### Detect, warn and defer to native implementations
+    ### Detect and defer to native implementations
 
     For features that have reached the tipping point, where the polyfill registers the same name as the native feature, include code to detect a native implementation, and if one exists, defer to it.  Where a native feature exists but is incomplete or buggy, consider using as much of it as possible and correcting only the deficiencies.
 
-    <div class="example">
-      <p>Example: searchParams</p>
-      <p>Initial implementations of the <a href='https://developer.mozilla.org/en/docs/Web/API/URL#Browser_compatibility'>URL API</a> were almost universally incomplete in that they did not include searchParams. The full specification was only supported by later releases. In the meantime, polyfills could make use of the native support that was available, and add the part that was missing.</p>
-    </div>
+    <aside class="example" title='searchParams'>
+      <p>Initial implementations of the URL API were almost universally incomplete in that they [did not include searchParams](https://developer.mozilla.org/en/docs/Web/API/URL#Browser_compatibility). The full specification was only supported by later releases. In the meantime, polyfills could make use of the native support that was available, and add the part that was missing.</p>
+    </aside>
 
-    When a full fledged native implementation is available, consider throwing a warning to the console to tell the site developer that they loaded a polyfill unnecessarily.
+    When a native implementation is available, consider throwing a warning to the console to tell the site developer that they loaded a polyfill unnecessarily.
 
     For features that are yet to reach the tipping point, speculative polyfills should not detect or defer to native implementations, and should not use the same name as a native implementation.
 
   </section>
 
-  <section>
+  <section id='advice-devs'>
 
-    ## Recommendations for website developers
+    ## Advice for website developers
 
     Website developers can achieve maximum benefits from polyfills and by following these best practices.
 
     ### Understand stability of both feature and polyfill
 
-    Use the lifecycle guidance above to understand whether the feature has passed the tipping point, and can be considered stable. When selecting a polyfill, look for signs of quality such as:
+    Use the [lifecycle guidance above](#life-cycle) to understand whether the feature has passed the tipping point, and can be considered stable. When selecting a polyfill, look for signs of quality such as:
 
     * Comprehensive test suite, especially if it includes relevant Web Platform Tests</li>
     * Effects on the performance profile of your site, measured using in-browser profiling tools or other auditing or monitoring tools or services
 
-    ### Do not automatically prefer native implementations for speculative polyfills
+    ### Don't use speculative polyfills that defer to native implementations
 
     If a feature is yet to reach the tipping point, using polyfills that squat on the common name for the feature is highly inadvisable, because when the feature is finalised, it might work differently to the polyfill you are using, and your website may break.  If a polyfill author has followed good practice by providing a polyfill with a non-conflicting name, don't undo this good practice by aliasing it to the common name.
 
@@ -202,7 +198,7 @@
 
     ### Implement or make use of an update mechanism
 
-    Don't bake a polyfill into your codebase in a way that does not allow for easy updates from source, especially if the polyfill includes code that automatically defers to a native implementation.  Updating such polyfills regularly will help to ensure that browsers receiving the polyfilled behaviour exhibit the same functionality as those in which you are using the feature natively.
+    When incorporating polyfills into your codebase, create a mechanism that allows you to easily update the polyfill from source later.  Updating polyfills regularly will help to ensure that browsers receiving the polyfilled behaviour exhibit the same functionality as those in which you are using the feature natively.
 
     ### Consider alternative ways of serving users of the slowest, least capable devices
 
@@ -218,15 +214,15 @@
 
   </section>
 
-  <section>
+  <section id='advice-distrib'>
 
-    ## Recommendations for polyfill distributors
+    ## Advice for polyfill distributors
 
     If you run a service or project that promotes and distributes polyfills, you can help the web move forward by adhering to the following best practices.
 
     ### Don't host or serve bad polyfills
 
-    When considering whether to distribute a polyfill, check whether it meets the best practices outlined under the Recommendations for polyfill authors within this finding.
+    When considering whether to distribute a polyfill, check whether it meets the best practices outlined in [Advice for polyfill authors](#advice-authors).
 
     ### Update polyfills as specifications change
 
