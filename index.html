@@ -192,9 +192,17 @@
 
     ### Don't serve unnecessary polyfills
 
-    Shipping unnecessary bytes to users that don't need them wastes the user's time and data allowance. Polyfill authors following good practice may throw a warning if the polyfill is loaded when not needed.
+    Shipping unnecessary bytes to users that don't need them wastes the user's time and data allowance, but performing feature detection first can delay the loading of necessary polyfills. It is generally better to optimise for modern browsers, so performing client-side feature detection and waiting for an extra script to load on older browsers is usually a good trade off.  However, if the full set of polyfills you might need in the worst case constitutes a negligible overhead, then you could choose to serve the full set to all browsers.
 
-    Consider using feature detection to dynamically determine which polyfills to use.
+<pre class='example' title='A simple feature detect'>
+&lt;script>
+  if (!(Promise in this)) {
+    // TODO
+  }
+&lt;/script>
+</pre>
+
+    Polyfill authors may choose to throw a warning if the polyfill is loaded when not needed.
 
     ### Keep polyfills up to date
 
