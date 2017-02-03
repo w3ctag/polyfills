@@ -224,7 +224,7 @@
 
     In deciding whether to ship polyfill-like code inside your library, you should consider questions such as:
 
-    * **How much of the feature are you using?** If you want [`fetch`](https://developer.mozilla.org/en/docs/Web/API/Fetch_API) but your use of it could be emulated in a 10-line wrapper around [`XHR`](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest), then it's better to do that than to bundle a spec-compliant `fetch` polyfill.
+    * **How much of the feature are you using?** If you want a large feature but your use of it could be emulated in naive 10-line implementation, then it's better to do that than to bundle a spec-compliant polyfill.
     * **How large is the polyfill code relative to your library code?** If it's a tiny polyfill (such as for a `Number.isNaN` implementation) then the overheads are negligible and not worth any concern.  However, in some cases a polyfill might exceed the size of the library.
     * **Are there multiple polyfills available?** If developers have a choice of polyfills for this feature, you may want to choose the one that works best with your library. If there's only one canonical option, it's easier to assume that the developer will use it.
     * **Does your library provide a good experience only when the feature is available natively?** If a polyfill allows your library to work but in an unacceptably slow or buggy way, it probably should not ship as part of the library.
