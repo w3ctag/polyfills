@@ -282,5 +282,25 @@ rafPolyfill(function() {
 
   </section>
 
+  <section id='advice-editors'>
+
+    ## Advice for spec editors
+
+    If you are developing a new feature for the web, polyfills can be hugely beneficial in helping to roll out that feature. 
+
+    ### Don't be constrained by what is 'polyfillable'
+
+    New web features need not be constrained by the need to enable polyfill implementations.  However, all other things being equal, choosing a design that is more polyfill friendly is desirable.
+
+    ### Make your feature easily detectable
+
+    Ensure that the feature exposes detection hooks that can be effectively used by feature-detection code to determine whether a user agent offers a native implementation of the feature.
+
+    ### Work with polyfill authors
+
+    Whether before or after the tipping point, development of polyfills should be welcomed, provided that the polyfill author adheres to the best practices included in this finding.  Help polyfill authors by sharing feature rationale and taking on feedback based on the polyfill implementation.
+
+  </section>
+
 </body>
 </html>
