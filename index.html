@@ -84,7 +84,7 @@
 
     ## Risks of premature polyfilling
 
-    Any JavaScript library that defines a property of the global object or extends a prototype of a global constructor, using a proposed or generically useful name, risks creating problems for the development of the Web if that library becomes widely available, and used, prior to the standardisation and implementation of the feature it seeks to create or emulate.
+    Any JavaScript library that defines a property of the global object or extends a prototype of a global constructor, using a proposed or generically useful name, risks creating problems for the development of the Web if that library becomes widely used, prior to the standardisation and implementation of the feature it seeks to create or emulate.
 
     <aside class="example" title='Mootools'>
       <p>The standardisation of `Array.prototype.contains` in JavaScript ran into problems when [it became clear that an old version of Mootools had already augmented the Array prototype](https://esdiscuss.org/topic/having-a-non-enumerable-array-prototype-contains-may-not-be-web-compatible) with a contains method. Websites that included this library would break in a browser that contained a native implementation of a contains method.  The standard method had to be renamed to includes to avoid breaking the web.</p>
