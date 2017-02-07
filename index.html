@@ -169,6 +169,10 @@
 
     For features that are yet to reach the tipping point, speculative polyfills should not detect or defer to native implementations, and should not use the same name as a native implementation.
 
+    ### Work with spec editors
+
+    If practical, collect information about polyfill usage, developer experience, or problems with polyfills conflicting with or behaving differently to a native implementation - and send that information to the people developing the specification or native implementations.
+
   </section>
 
   <section id='advice-devs'>
@@ -267,10 +271,6 @@ rafPolyfill(function() {
     ### Update polyfills as specifications change
 
     Keep the polyfills that you host up to date.  If practical, push updates directly to your customers, otherwise encourage them to move to the latest version.
-
-    ### Collect usage data
-
-    If practical, collect information about which polyfills are most popular, and where site developers are encountering problems using them, or problems with polyfills conflicting with or behaving differently to a native implementation - and send that information to the appropriate parties.
 
     ### Don't bundle dependencies
 
