@@ -186,9 +186,14 @@
 
     ### Don't use speculative polyfills that defer to native implementations
 
-    If a feature is yet to reach the tipping point, using polyfills that squat on the common name for the feature is highly inadvisable, because when the feature is finalised, it might work differently to the polyfill you are using, and your website may break.  If a polyfill author has followed good practice by providing a polyfill with a non-conflicting name, don't undo this good practice by aliasing it to the common name.
+    If a feature is yet to reach the tipping point, using polyfills that squat on the proposed name for the feature is highly inadvisable, because when the feature is finalised, it might work differently to the polyfill you are using, and your website may break.  If a polyfill author has followed good practice for pre-tipping point features by providing a polyfill with a non-conflicting name, don't undo this good practice by aliasing it to the proposed name.
 
-    Instead, use the speculative polyfill as a library, wait until the feature has passed the tipping point, then update your code to use a transparent polyfill that automatically defers to native implementations where they exist.
+    Instead, use the speculative polyfill in private scope or under a custom name, wait until the feature has passed the tipping point, then update your code to use a polyfill that automatically defers to native implementations where they exist.
+
+    <pre class="example">import rafPolyfill from 'request-animation-frame';
+rafPolyfill(function() {
+  ...
+});</pre>
 
     ### Don't serve unnecessary polyfills
 
