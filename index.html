@@ -207,12 +207,11 @@ rafPolyfill(function() {
 
     ### Consider the slowest, least capable devices
 
-    Typically the devices and browsers that require the largest amount of polyfill code are also the least capable of parsing it efficiently, and the most likely to be on a metered and expensive internet connection.
+    Typically the devices and browsers that require the largest amount of polyfill code are also the least capable of parsing it efficiently, and the most likely to be on a metered and expensive internet connection.  Alternatives to polyfilling on these devices include:
 
-    Consider setting a baseline of support below which you provide a less enhanced experience that does not require the latest features (that you would otherwise need to polyfill).  Potential alternative solutions for these browsers include:
-
-    * A version of the site that does not require the newer feature
-    * A version of the JavaScript 'transpiled' using a server-side tool to replace more modern features with equivalent older ones for the same end result
+    * Progressive enhancement: Silently drop any aspects of the application enabled by features that are not supported
+    * Transpiling: Create a version of the JavaScript processed using a server-side tool to replace more modern features with equivalent older ones for the same end result
+    * Lo-fi mode: Create a separate version of the site that does not require the newer features, perhaps setting a baseline of support below which you provide a less enhanced experience
     * A notice informing the user that their browser is not capable of using that aspect of your site, or the entire site.  This may be appropriate in some cases where the site is an application whose fundamental purpose relies on a particular feature of the web.
 
     If you implement a baseline, detection of browsers that fall below the line must be based on robust feature detection, not proxy indicators that may be easier to measure but which will also exclude capable browsers.
