@@ -131,7 +131,7 @@
 
     ### Encapsulate as a module or UMD
 
-    Use standard mechanisms for encapsulating your polyfill, such as ECMAScript modules, [commonJS](http://wiki.commonjs.org/wiki/CommonJS) or [AMD](https://github.com/amdjs/amdjs-api/wiki/AMD).  If not defining an ES module, use a [universal module declaration](https://github.com/umdjs/umd) to make your polyfill compatible with multiple module loaders.
+    Use standard mechanisms for encapsulating your polyfill, such as ECMAScript modules or [commonJS](http://wiki.commonjs.org/wiki/CommonJS).  If not defining an ES module, use a [universal module declaration](https://github.com/umdjs/umd) or other broadly compatible module API to make your polyfill compatible with multiple module loaders.
 
     Don't pollute the global scope by creating or extending global objects inside a module that is intended to be consumed via a module loader.
 
