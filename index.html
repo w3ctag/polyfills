@@ -182,9 +182,11 @@
     * Comprehensive test suite, especially if it includes relevant Web Platform Tests
     * Effects on the performance profile of your site, measured using in-browser profiling tools or other auditing or monitoring tools or services
 
-    ### Don't use speculative polyfills that defer to native implementations
+    ### Don't reference speculative polyfills using the proposed name
 
-    If a feature is yet to reach the tipping point, using polyfills that squat on the proposed name for the feature is highly inadvisable, because when the feature is finalized, it might work differently to the polyfill you are using, and your website may break.  If a polyfill author has followed good practice for pre-tipping point features by providing a polyfill with a non-conflicting name, don't undo this good practice by aliasing it to the proposed name.
+    If a feature is yet to reach the tipping point, using polyfills that squat on the proposed name for the feature is highly inadvisable, because when the feature is finalized, it might work differently to the polyfill you are using, and your website may break.  
+    
+    Speculative polyfills which present themselves via an interface indistinguishable from the proposed feature should therefore be avoided, or amended to use a different name.  Similarly, if a polyfill author has followed good practice for pre-tipping point features by providing a polyfill with a non-conflicting name, don't alias it to the proposed name.
 
     Instead, use the speculative polyfill in private scope or under a custom name, wait until the feature has passed the tipping point, then update your code to use a polyfill that automatically defers to native implementations where they exist.
 
