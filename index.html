@@ -41,7 +41,7 @@
 
   <section id="sotd">
 
-    This document has been produced by the [<abbr title="World Wide Web Consortium">W3C </abbr> Technical Architecture Group (TAG)](https://www.w3.org/2001/tag/).
+    This document has been produced by the [W3C Technical Architecture Group (TAG)](https://www.w3.org/2001/tag/).
 
     The TAG approved this finding at its [February 2017 face to face meeting](https://github.com/w3ctag/meetings/tree/gh-pages/2017/02-boston). Please send comments on this finding to the publicly archived TAG mailing list [www-tag@w3.org](mailto:www-tag@w3.org) ([archive](https://lists.w3.org/Archives/Public/www-tag/)).
 
@@ -87,16 +87,23 @@
     Early, speculative polyfills help shape the standards process.  However, any JavaScript library that defines a property of the global object or extends a prototype of a global constructor using a proposed or generically useful name, risks creating problems for the development of the Web if that library becomes widely used, prior to the standardization and implementation of the feature it seeks to create or emulate.
 
     <aside class="example" title='Mootools'>
-      <p>The standardization of `Array.prototype.contains` in JavaScript ran into problems when [it became clear that an old version of Mootools had already augmented the Array prototype](https://esdiscuss.org/topic/having-a-non-enumerable-array-prototype-contains-may-not-be-web-compatible) with a contains method that was (contrary to the later specification) enumerable. Websites that included this library would break in a browser that contained a native implementation of a contains method.  The standard method had to be renamed to includes to avoid breaking the web.</p>
+      
+      The standardization of `Array.prototype.contains` in JavaScript ran into problems when [it became clear that an old version of Mootools had already augmented the Array prototype](https://esdiscuss.org/topic/having-a-non-enumerable-array-prototype-contains-may-not-be-web-compatible) with a contains method that was (contrary to the later specification) enumerable. Websites that included this library would break in a browser that contained a native implementation of a contains method.  The standard method had to be renamed to includes to avoid breaking the web.
     </aside>
 
     <aside class="example" title='createShadowRoot'>
-      <p>During the evolution of Web Components, Google created an initial implementation and polyfill for `createShadowRoot`. The release of that implementation and adoption of the polyfill prevented the Working Group from iterating on the API design, so [it was deprecated in favor of `attachShadow`](https://github.com/webcomponents/hello-world-element/issues/11).</p>
+      
+      During the evolution of Web Components, Google created an initial implementation and polyfill for `createShadowRoot`. The release of that implementation and adoption of the polyfill prevented the Working Group from iterating on the API design, so [it was deprecated in favor of `attachShadow`](https://github.com/webcomponents/hello-world-element/issues/11).
+    
     </aside>
 
     Polyfill authors can avoid these problems if their version of the feature can be used under a custom name, regardless of the existence of any native implementation of the same or similar feature under a different name.  However, many site developers will canonicalize the name of a library by deferring to a 'fantasy' native implementation under a name that might be standardized in future, or which is standardized but only available in some browsers, e.g.:
 
-    <pre>requestAnimationFrame = requestAnimationFrame || webkitRequestAnimationFrame || rafEquivLibrary;</pre>
+    <pre>
+      
+      requestAnimationFrame = requestAnimationFrame || webkitRequestAnimationFrame || rafEquivLibrary;
+    
+    </pre>
 
     Following this pattern sets up an assumption that the standard native implementation, when available, will be functionally identical to a vendor-prefixed implementation or speculative polyfill, which may not be the case.
 
@@ -156,7 +163,9 @@
     For features that have reached the tipping point, where the polyfill registers the same name as the native feature, include code to detect a native implementation, and if one exists, defer to it.  Where a native feature exists but is incomplete or buggy, consider using as much of it as possible and correcting only the deficiencies.
 
     <aside class="example" title='searchParams'>
-      <p>Initial implementations of the URL API were almost universally incomplete in that they [did not include searchParams](https://developer.mozilla.org/en/docs/Web/API/URL#Browser_compatibility). The full specification was only supported by later releases. In the meantime, polyfills could make use of the native support that was available, and add the part that was missing.</p>
+      
+      Initial implementations of the URL API were almost universally incomplete in that they [did not include searchParams](https://developer.mozilla.org/en/docs/Web/API/URL#Browser_compatibility). The full specification was only supported by later releases. In the meantime, polyfills could make use of the native support that was available, and add the part that was missing.
+    
     </aside>
 
     When a native implementation is available, consider throwing a warning to the console to tell the site developer that they loaded a polyfill unnecessarily.
@@ -170,7 +179,7 @@
   </section>
 
   <section id='advice-devs'>
-
+    
     ## Advice for website developers
 
     Website developers should ensure that the most up to date best practices for performance and security are followed when using any script on a website. In addition, they can achieve maximum benefits from polyfills by following these specific best practices.
@@ -190,10 +199,14 @@
 
     Instead, use the speculative polyfill in private scope or under a custom name, wait until the feature has passed the tipping point, then update your code to use a polyfill that automatically defers to native implementations where they exist.
 
-    <pre class="example">import rafPolyfill from 'request-animation-frame';
-rafPolyfill(function() {
-  ...
-});</pre>
+    <pre class="example">
+      
+      import rafPolyfill from 'request-animation-frame';
+      rafPolyfill(function() {
+        ...
+      });
+
+    </pre>
 
     ### Don't serve unnecessary polyfills
 
@@ -223,7 +236,6 @@ rafPolyfill(function() {
   </section>
 
   <section id='advice-library'>
-
     ## Advice for library and framework authors
 
     Some libraries and frameworks bundle polyfills to achieve the maximum browser compatibility and developer satisfaction.  We find that the following best practices apply to library authors:
@@ -279,7 +291,7 @@ rafPolyfill(function() {
   </section>
 
   <section id='advice-editors'>
-
+    
     ## Advice for spec editors
 
     If you are developing a new feature for the web, polyfills can be hugely beneficial in helping to roll out that feature. 
